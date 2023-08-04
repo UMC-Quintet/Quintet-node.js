@@ -16,6 +16,8 @@ module.exports = function () {
     app.use(cors());
 
     require('../src/route/guideRoute')(app);
+    require('../src/route/staticRoute')(app);
+    require('../src/route/recordRoute')(app);
 
     return app;
 };
