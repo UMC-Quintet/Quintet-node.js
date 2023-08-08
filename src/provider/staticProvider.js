@@ -17,6 +17,7 @@ exports.weeklySum = async function (user_id, startDate, endDate) {
 
     const result = degToPer(weeklySumResult[0]);
     return {
+        user_id: user_id,
         start_date: startDate,
         end_date: endDate,
         work_per: result.work_per,
@@ -38,6 +39,9 @@ exports.monthlySum = async function (user_id, year, month) {
 
     const result = degToPer(monthlySumResult[0]);
     return {
+        user_id: user_id,
+        year: year,
+        month: month,
         work_per: result.work_per,
         health_per: result.health_per,
         family_per: result.family_per,
@@ -57,6 +61,8 @@ exports.annualSum = async function (user_id, year) {
 
     const result = degToPer(annualSumResult[0]);
     return {
+        user_id: user_id,
+        year: year,
         work_per: result.work_per,
         health_per: result.health_per,
         family_per: result.family_per,
