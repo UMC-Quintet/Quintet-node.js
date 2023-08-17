@@ -1,6 +1,5 @@
 //homeController.js
-//const quintetCheckRecords = require('./sampleDB');
-const homeProvider = require("../../app/Home/homeProvider");
+const homeProvider = require("../provider/homeProvider");
 
 
 // 입력한 날짜가 포함된 한 주의 시작 날짜와 끝 날짜를 계산하는 함수
@@ -13,7 +12,7 @@ function getWeekRange(dateString) {
   const endOfWeek = new Date(startOfWeek);
   endOfWeek.setDate(endOfWeek.getDate() + 6); // 해당 주의 마지막 날짜
 
-  return { start: startOfWeek, end: endOfWeek };
+  return { start: new Date(startOfWeek.toISOString()), end: new Date(endOfWeek.toISOString()) };
 }
 
 
@@ -26,10 +25,11 @@ exports.getHome = async function getQuintetCheckRecordsAPI(req, res) {
     const quintetCheckResult = await homeProvider.retrieveQuintetCheck();
     const records = quintetCheckResult.filter(
       (record) =>
-        record.user_id === userId &&
-        new Date(record.date) >= start && // 해당 주의 시작 날짜보다 크거나 같고
-        new Date(record.date) <= end // 해당 주의 끝 날짜보다 작거나 같은 기록을 필터링
+          record.user_id === userId &&
+          new Date(record.date) >= start && // 해당 주의 시작 날짜보다 크거나 같고
+          new Date(record.date) <= end // 해당 주의 끝 날짜보다 작거나 같은 기록을 필터링
     );
+    console.log(records);
     
 
 
@@ -49,6 +49,7 @@ exports.getHome = async function getQuintetCheckRecordsAPI(req, res) {
       });
     }
   } catch (error) {
+    console.log(error);
     return res.status(500).json({
       isSuccess: false,
       code: 500,

@@ -1,7 +1,6 @@
-const { pool } = require("../../../config/database");
-const { logger } = require("../../../config/winston");
+const { pool } = require("../../config/database");
 
-const homeDao = require("./homeDao");
+const homeDao = require("../dao/homeDao");
 
 exports.retrieveQuintetCheck = async function (userId) {
   const connection = await pool.getConnection(async (conn) => conn);

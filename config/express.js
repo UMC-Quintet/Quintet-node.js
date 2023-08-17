@@ -22,6 +22,7 @@ module.exports = function () {
     require('../src/route/guideRoute')(app);
     require('../src/route/staticRoute')(app);
     require('../src/route/recordRoute')(app);
+    require('../src/route/homeRoute')(app);
 
     return app;
 };

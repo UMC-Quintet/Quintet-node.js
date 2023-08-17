@@ -1,6 +1,5 @@
 module.exports = function(app){
-    const home = require('./homeController');
-    const jwtMiddleware = require('../../../config/jwtMiddleware');
+    const home = require('../controller/homeController');
 
     app.get('/app/home', home.getHome);
 

@@ -3,8 +3,8 @@
 async function selectQuintet(connection) {
     const selectQuintetQuery = `
                 SELECT user_id, date, work_deg, health_deg, 
-                family_deg, relationship_deg, property_deg
-                FROM document`;
+                family_deg, relationship_deg, money_deg
+                FROM document;`;
     const [QuintetRows] = await connection.query(selectQuintetQuery);
     return QuintetRows;
 }
