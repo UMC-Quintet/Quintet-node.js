@@ -1,5 +1,5 @@
 const baseResponse = require("../../config/baseResponseStatus");
-const {response, errResponse} = require("../../config/response");
+const {response} = require("../../config/response");
 const recordService = require("../service/recordService");
 const recordProvider = require("../provider/recordProvider")
 
