@@ -3,22 +3,14 @@ const {response, errResponse} = require("../../config/response");
 const recordService = require("../service/recordService");
 const recordProvider = require("../provider/recordProvider");
 
-function todayDate() {
-    const today = new Date();
-    const year = today.getFullYear();
-    const month = today.getMonth()+1;
-    const day = today.getDate();
-    return `${year}-${month}-${day}`;
-}
-
 exports.postTodayChecks = async function (req, res) {
     //const user_id = req.user.user_id;
     const {user_id, work_deg, health_deg, family_deg, relationship_deg, money_deg} = req.body;
 
-    const dateString = todayDate();
-    console.log(dateString);
+    const today = new Date();
+    console.log(today);
 
-    const postTodayChecksResult = await recordService.todayChecks(user_id, dateString, work_deg, health_deg, family_deg, relationship_deg, money_deg);
+    const postTodayChecksResult = await recordService.todayChecks(user_id, today, work_deg, health_deg, family_deg, relationship_deg, money_deg);
 
     return res.send(postTodayChecksResult);
 };
@@ -27,10 +19,10 @@ exports.patchTodayRecord = async function (req, res) {
     //const user_id = req.user.user_id;
     const {user_id, work_doc, health_doc, family_doc, relationship_doc, money_doc } = req.body;
 
-    const dateString = todayDate();
-    console.log(dateString);
+    const today = new Date();
+    console.log(today);
 
-    const patchTodayRecordsResult = await recordService.todayRecords(user_id, dateString, work_doc, health_doc, family_doc, relationship_doc, money_doc);
+    const patchTodayRecordsResult = await recordService.todayRecords(user_id, today, work_doc, health_doc, family_doc, relationship_doc, money_doc);
 
     return res.send(patchTodayRecordsResult);
 };
