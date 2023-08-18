@@ -12,7 +12,8 @@ async function todayRecords(connection, todayRecordParams) {
 
 async function selectRecordsByDate(connection, user_id, year, month) {
     const selectRecordsQuery = `select * from document where user_id = ? and year(date) and month(date);`;
-    return await connection.query(selectRecordsQuery, [user_id, year, month]);
+    const selectRecordsResult = await connection.query(selectRecordsQuery, [user_id, year, month]);
+    return selectRecordsResult[0];
 }
 
 async function selectRecordsByElement(connection, user_id, year, month, element) {
@@ -29,7 +30,8 @@ async function selectRecordsByElement(connection, user_id, year, month, element)
         selectRecordsQuery = `select id, date, money_deg, money_doc from document where user_id = ? and year(date) = ? and month(date) = ?;`;
     }
 
-    return await connection.query(selectRecordsQuery, [user_id, year, month]);
+    const selectRecordsResult = await connection.query(selectRecordsQuery, [user_id, year, month]);
+    return selectRecordsResult[0];
 }
 
 module.exports = {

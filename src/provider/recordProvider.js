@@ -10,7 +10,7 @@ exports.getRecordsByDate = async function (user_id, year, month) {
         user_id: user_id,
         year: year,
         month: month,
-        records: recordsListResult[0]
+        records: recordsListResult
     };
 }
 
@@ -24,6 +24,6 @@ exports.getRecordsByElement = async function (user_id, year, month, element) {
         year: year,
         month: month,
         element: element,
-        records: recordsListResult[0]
+        records: recordsListResult
     };
 }
