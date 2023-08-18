@@ -4,4 +4,8 @@ module.exports = function (app) {
     app.post('/record', record.postTodayChecks);
 
     app.patch('/record', record.patchTodayRecord);
+
+    app.get('/records/date', record.getRecordsByDate);
+
+    app.get('/records/element', record.getRecordsByElement);
 }
