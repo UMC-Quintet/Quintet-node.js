@@ -19,7 +19,7 @@ exports.getUserById = async function (id) {
     return findUserResult[0];
 };
 
-exports.getSnsID = async function (user_id) {
+exports.getSnsID = async function (user_id) { //카카오 로그아웃에서 이용
 
     const connection = await pool.getConnection(async (conn) => conn);
     const findUserResult = await userDao.findSnsId(connection, user_id);
