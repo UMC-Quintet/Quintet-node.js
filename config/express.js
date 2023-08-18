@@ -45,6 +45,7 @@ module.exports = function () {
     require('../src/route/recordRoute')(app);
     require('../src/route/authRoute')(app);
     require('../src/route/userRoute')(app);
+    require('../src/route/homeRoute')(app);
 
     return app;
 };
