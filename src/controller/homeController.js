@@ -2,16 +2,16 @@
 const homeProvider = require("../provider/homeProvider");
 const {response, errResponse} = require("../../config/response");
 const baseResponse = require("../../config/baseResponseStatus");
+const moment = require("moment-timezone");
 
 // 입력한 날짜가 포함된 한 주의 시작 날짜와 끝 날짜를 계산하는 함수
 function getWeekRange() {
-  const date = new Date();
-  const day = date.getDay(); // 요일 (0: 일요일, 1: 월요일, ..., 6: 토요일)
-  const diff = date.getDate() - day + (day === 0 ? -6 : 0); // 해당 주의 첫 날짜
-  const startOfWeek = new Date(date.setDate(diff));
+  const KST = moment().tz('Asia/Seoul');
+  const day = KST.day(); // 요일 (0: 일요일, 1: 월요일, ..., 6: 토요일)
+  const diff = KST.date() - day + (day === 0 ? -6 : 0); // 해당 주의 첫 날짜
 
-  const endOfWeek = new Date(startOfWeek);
-  endOfWeek.setDate(endOfWeek.getDate() + 6); // 해당 주의 마지막 날짜
+  const startOfWeek = KST.date(diff).format('YYYY-MM-DD');
+  const endOfWeek = KST.date(diff+6).format('YYYY-MM-DD'); // 해당 주의 마지막 날짜
 
   return { start: startOfWeek, end: endOfWeek };
 }
