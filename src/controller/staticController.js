@@ -1,14 +1,14 @@
 const staticProvider = require("../provider/staticProvider");
 const baseResponse = require("../../config/baseResponseStatus");
 const {response, errResponse} = require("../../config/response");
+const moment = require('moment-timezone');
 function getWeekRange() {
-    const date = new Date();
-    const day = date.getDay(); // 요일 (0: 일요일, 1: 월요일, ..., 6: 토요일)
-    const diff = date.getDate() - day + (day === 0 ? -6 : 0); // 해당 주의 첫 날짜
-    const startOfWeek = new Date(date.setDate(diff));
+    const KST = moment().tz('Asia/Seoul');
+    const day = KST.day(); // 요일 (0: 일요일, 1: 월요일, ..., 6: 토요일)
+    const diff = KST.date() - day + (day === 0 ? -6 : 0); // 해당 주의 첫 날짜
 
-    const endOfWeek = new Date(startOfWeek);
-    endOfWeek.setDate(endOfWeek.getDate() + 6); // 해당 주의 마지막 날짜
+    const startOfWeek = KST.date(diff).format('YYYY-MM-DD');
+    const endOfWeek = KST.date(diff+6).format('YYYY-MM-DD'); // 해당 주의 마지막 날짜
 
     return { start: startOfWeek, end: endOfWeek };
 }
@@ -16,9 +16,10 @@ function getWeekRange() {
 exports.getWeeklyStatic = async function (req, res) {
     //const user_id = req.user.user_id;
     const user_id = req.query.user_id;
-    const {startDate, endDate} = getWeekRange();
+    const { start, end } = getWeekRange();
+    console.log(start);
 
-    const weeklyStaticResult = await staticProvider.weeklySum(user_id, startDate, endDate);
+    const weeklyStaticResult = await staticProvider.weeklySum(user_id, start, end);
 
     return res.send(response(baseResponse.SUCCESS, weeklyStaticResult));
 };
