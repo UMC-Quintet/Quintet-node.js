@@ -4,6 +4,7 @@ const recordService = require("../service/recordService");
 const recordProvider = require("../provider/recordProvider")
 
 exports.postTodayChecks = async function (req, res) {
+    //const user_id = req.user.user_id;
     const {user_id, work_deg, health_deg, family_deg, relationship_deg, money_deg} = req.body;
 
     const today = new Date();
@@ -19,7 +20,8 @@ exports.postTodayChecks = async function (req, res) {
 };
 
 exports.patchTodayRecord = async function (req, res) {
-    const { user_id, work_doc, health_doc, family_doc, relationship_doc, money_doc } = req.body;
+    //const user_id = req.user.user_id;
+    const {user_id, work_doc, health_doc, family_doc, relationship_doc, money_doc } = req.body;
 
     const today = new Date();
     const year = today.getFullYear();
@@ -34,6 +36,7 @@ exports.patchTodayRecord = async function (req, res) {
 };
 
 exports.getRecordsByDate = async function (req, res) {
+    //const user_id = req.user.user_id;
     const { user_id, year, month } = req.query;
 
     const recordsListByDate = await recordProvider.getRecordsByDate(user_id, year, month);
@@ -42,7 +45,8 @@ exports.getRecordsByDate = async function (req, res) {
 };
 
 exports.getRecordsByElement = async function (req, res) {
-    const { user_id, year, month, element } = req.query;
+    //const user_id = req.user.user_id;
+    const {user_id, year, month, element } = req.query;
 
     const recordsListByElement = await recordProvider.getRecordsByElement(user_id, year, month, element);
 
