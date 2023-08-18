@@ -40,7 +40,6 @@ module.exports = function () {
         console.log("루트 페이지로 접속하셨습니다.");
     });
 
-    require('../src/route/guideRoute')(app);
     require('../src/route/staticRoute')(app);
     require('../src/route/recordRoute')(app);
     require('../src/route/authRoute')(app);
