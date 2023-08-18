@@ -8,10 +8,7 @@ module.exports = function (app) {
     const user = require("../controller/userController");
     //app.get(), app.post() ...
 
-    app.get('/user/login', user.getUserInfo, (req, res) => {
-        console.log("로그인 성공");
-        res.redirect('/home');
-    });
+    app.get('/user/login', user.getUserInfo);
 
     app.patch('/user', user.patchUserName);
 
@@ -40,7 +37,7 @@ module.exports = function (app) {
                     interval.stopInterval(interval.getInterval());
                     res.clearCookie('userData');
                     req.session.destroy(); // 세션 파괴
-                    res.redirect('/home');
+                    res.redirect('/');
                 });
             } else {
                 res.send(errResponse(baseResponse.SESSION_ERROR));

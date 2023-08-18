@@ -9,8 +9,8 @@ exports.getUserInfo = async function (req, res) {
             user_id: req.user.user_id,
             username: req.user.username
         }
-        res.cookie('userData', JSON.stringify(userData), {maxAge: 7 * 24 * 60 * 60 * 1000});
-        return res.send(response(baseResponse.SUCCESS, userData));
+        res.cookie('userData', JSON.stringify(userData), {maxAge: 7 * 24 * 60 * 60 * 1000}); //임시로 7일간 유지되도록 함
+        return res.redirect('/home');
     } else {
         return res.send(errResponse(baseResponse.USER_UNAUTHORIZED));
     }
@@ -24,8 +24,8 @@ exports.patchUserName = async function (req, res) {
     if(username.length > 10) {
         return res.send(errResponse(baseResponse.USERNAME_LENGTH))
     } else {
-        const patchUserNameResult = await userService.updateUserName(user_id, username);
-        return res.send(patchUserNameResult)
+        await userService.updateUserName(user_id, username);
+        return res.send(response(baseResponse.SUCCESS, {username: username}));
     }
 };
 
