@@ -22,7 +22,7 @@ exports.getHome = async function getQuintetCheckRecordsAPI(req, res) {
     const userId = req.query.user_id;
     const date = req.query.date;
     const { start, end } = getWeekRange(date);
-    const quintetCheckResult = await homeProvider.retrieveQuintetCheck();
+    const quintetCheckResult = await homeProvider.retrieveQuintetCheck(userId);
     const records = quintetCheckResult.filter(
       (record) =>
           record.user_id === userId &&
