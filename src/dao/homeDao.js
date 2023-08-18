@@ -6,6 +6,7 @@ async function selectQuintet(connection, userId, date) {
                 family_deg, relationship_deg, property_deg
                 FROM document`;
     const [QuintetRows] = await connection.query(selectQuintetQuery, [userId, date]);
+
     return QuintetRows;
 }
 
