@@ -40,7 +40,7 @@ module.exports = function (app) {
                     interval.stopInterval(interval.getInterval());
                     res.clearCookie('userData');
                     req.session.destroy(); // 세션 파괴
-                    res.redirect('/home');
+                    res.redirect('/');
                 });
             } else {
                 res.send(errResponse(baseResponse.SESSION_ERROR));
