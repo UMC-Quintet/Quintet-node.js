@@ -36,3 +36,12 @@ exports.deleteUser = async function (req, res) {
 
     res.redirect('/user/logout');
 };
+
+exports.postData = async (req, res) => {
+    const user_id = req.body.user_id;
+    const userLocalData = req.body.data;
+
+    const localDataSave = await userService.postLocalData(user_id, userLocalData);
+
+    return res.send(localDataSave);
+};

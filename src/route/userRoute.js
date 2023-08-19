@@ -49,4 +49,6 @@ module.exports = function (app) {
     });
 
     app.get('/user/delete', user.deleteUser);
+
+    app.post('/user/data', user.postData); //비회원->회원 전환 라우트
 }
