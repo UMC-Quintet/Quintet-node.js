@@ -48,6 +48,12 @@ async function updateRefreshToken(connection, user_id, refreshToken) {
     return weeklySumRow[0];
 }
 
+async function insertLocalData(connection, dataParams) {
+    const localDataQuery = `insert into document (user_id, date, work_deg, work_doc, health_deg, health_doc, family_deg, family_doc, relationship_deg, relationship_doc, money_deg, money_doc)
+                            values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);`;
+    return await connection.query(localDataQuery, dataParams);
+}
+
 module.exports = {
     findUserBySnsId,
     insertNewUser,
@@ -56,4 +62,5 @@ module.exports = {
     deleteUserData,
     updateRefreshToken,
     findSnsId,
+    insertLocalData
 };

@@ -69,3 +69,23 @@ exports.updateRefreshToken = async function (user_id, refreshToken) {
         return errResponse(baseResponse.DB_ERROR);
     }
 };
+
+exports.postLocalData = async function (user_id, userLocalData) {
+    try{
+        const connection = await pool.getConnection(async (conn) => conn);
+
+        for(const item of userLocalData) {
+            const dataParams = [ user_id, item.date, item.work_deg, item.work_doc, item.health_deg, item.health_doc, item.family_deg,
+                item.family_doc, item.relationship_deg, item.relationship_doc, item.money_deg, item.money_doc ]
+
+            const localDataTransmission = await userDao.insertLocalData(connection, dataParams);
+            console.log(localDataTransmission[0]);
+        }
+        connection.release();
+
+        return response(baseResponse.SUCCESS);
+    } catch(err) {
+        console.log(`App - data transmission Service error\n: ${err.message}`);
+        return errResponse(baseResponse.DB_ERROR);
+    }
+};
