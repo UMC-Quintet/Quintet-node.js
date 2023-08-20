@@ -2,6 +2,29 @@ const baseResponse = require("../../config/baseResponseStatus");
 const {response, errResponse} = require("../../config/response");
 const userService = require("../../src/service/userService")
 
+function removeDuplicate(arr) {
+    const dateMap = new Map();
+
+    for(let i = 0; i < arr.length; i++){
+        const item = arr[i];
+        const { date } = item;
+
+        if(!dateMap.has(date)) { //map에 없는 날짜일때만
+            dateMap.set(date, i); //map에 date:i 저장 -> 겹치는 date를 가지는 뒷 데이터는 map에 못들어옴
+        }
+    }
+
+    const idx = Array.from(dateMap.values()); //map에 저장된 i로 배열 생성
+    const result = [];
+    for (let i = 0; i < arr.length; i++){
+        if(idx.includes(i)) { //배열에 i가 있으면
+            result.push(arr[i]); //result에 arr 값을 추가한다.
+        }
+    }
+
+    return result;
+}
+
 exports.getUserInfo = async function (req, res) {
     if(req.isAuthenticated()){
         const userData = {
@@ -39,7 +62,7 @@ exports.deleteUser = async function (req, res) {
 
 exports.postData = async (req, res) => {
     const user_id = req.body.user_id;
-    const userLocalData = req.body.data;
+    const userLocalData = removeDuplicate(req.body.data);
 
     const localDataSave = await userService.postLocalData(user_id, userLocalData);
 
