@@ -34,9 +34,16 @@ async function selectRecordsByElement(connection, user_id, year, month, element)
     return selectRecordsResult[0];
 }
 
+async function selectDuplicateData(connection, user_id, date) {
+    const selectRecordsQuery = `select * from document where user_id = ? and date = ?;`;
+    const selectRecordsResult = await connection.query(selectRecordsQuery, [user_id, date]);
+    return selectRecordsResult[0];
+}
+
 module.exports = {
     todayChecks,
     todayRecords,
     selectRecordsByDate,
-    selectRecordsByElement
+    selectRecordsByElement,
+    selectDuplicateData
 };

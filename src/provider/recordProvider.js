@@ -27,3 +27,12 @@ exports.getRecordsByElement = async function (user_id, year, month, element) {
         records: recordsListResult
     };
 }
+
+exports.checkDuplicateData = async function (user_id, date) {
+    const connection = await pool.getConnection(async (conn) => conn);
+    const recordsListResult = await recordDao.selectDuplicateData(connection, user_id, date);
+
+    connection.release();
+
+    return recordsListResult;
+}
