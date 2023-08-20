@@ -1,5 +1,5 @@
 const baseResponse = require("../../config/baseResponseStatus");
-const {response} = require("../../config/response");
+const {response, errResponse} = require("../../config/response");
 const recordService = require("../service/recordService");
 const recordProvider = require("../provider/recordProvider");
 const moment = require('moment-timezone');
@@ -12,9 +12,14 @@ exports.postTodayChecks = async function (req, res) {
     const todayDate = KST.format('YYYY-MM-DD');
     console.log(todayDate);
 
-    const postTodayChecksResult = await recordService.todayChecks(user_id, todayDate, work_deg, health_deg, family_deg, relationship_deg, money_deg);
+    const checkDuplicate = await recordProvider.checkDuplicateData(user_id, todayDate);
+    if(checkDuplicate){
+        return res.send(errResponse(baseResponse.DUPLICATE_DATA));
+    } else {
+        const postTodayChecksResult = await recordService.todayChecks(user_id, todayDate, work_deg, health_deg, family_deg, relationship_deg, money_deg);
 
-    return res.send(postTodayChecksResult);
+        return res.send(postTodayChecksResult);
+    }
 };
 
 exports.patchTodayRecord = async function (req, res) {
