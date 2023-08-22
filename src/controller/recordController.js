@@ -9,8 +9,8 @@ exports.postTodayChecks = async function (req, res) {
     const {user_id, work_deg, health_deg, family_deg, relationship_deg, money_deg} = req.body;
 
     const KST = moment().tz('Asia/Seoul');
-    const todayDate = KST.format('YYYY-MM-DD');
-    console.log(todayDate+1);
+    const todayDate = KST.format('YYYY-MM-DD').toString();
+    console.log(todayDate);
 
     const checkDuplicate = await recordProvider.checkDuplicateData(user_id, todayDate);
 
