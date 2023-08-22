@@ -1,7 +1,11 @@
 const baseResponse = require("../../config/baseResponseStatus");
 const {response, errResponse} = require("../../config/response");
-const userService = require("../../src/service/userService")
+const userService = require("../../src/service/userService");
+const userProvider = require("../../src/provider/userProvider");
+const axios = require('axios');
+const dotenv = require('dotenv');
 
+dotenv.config();
 function removeDuplicate(arr) {
     const dateMap = new Map();
 
@@ -67,4 +71,57 @@ exports.postData = async (req, res) => {
     const localDataSave = await userService.postLocalData(user_id, userLocalData);
 
     return res.send(localDataSave);
+};
+
+exports.naverLogin = async (req, res) => {
+    const code = req.query.code;
+
+    const tokenResponse = await axios.post(
+        "https://nid.naver.com/oauth2.0/token",
+        qs.stringify({
+            grant_type: "authorization_code",
+            client_id: process.env.NAVER_CLIENT_ID,
+            client_secret: process.env.NAVER_CLIENT_SECRET,
+            code: code,
+            state: "YOUR_STATE_STRING",
+            redirect_uri: process.env.NAVER_REDIRECT_URI,
+        })
+    );
+    const  accessToken = tokenResponse.data.access_token; //TODO: 갱신 로직 추가
+
+    const userInfoResponse = await axios.get(
+        "https://openapi.naver.com/v1/nid/me",
+        {
+            headers: {
+                Authorization: `Bearer ${accessToken}`,
+            },
+        }
+    );
+
+    const userInfo = userInfoResponse.data.response;
+    let exUser = await userProvider.getUserBySnsId(userInfo.id, 'naver');
+    if(exUser) {
+        const user = {
+            user_id: exUser.id,
+            username: exUser.username,
+            provider: exUser.provider,
+            accessToken: accessToken,
+        };
+
+        req.user = user;
+    } else {
+        console.log("해당 유저 없음");
+        await userService.insertNewUser(userInfo.nickname, userInfo.email, 'naver', 'refreshtokens', userInfo.id); //refreshToken을 어떻게 발급받는지 몰라서 일단 임의의 값을 넣도록 함
+        const newUser = userProvider.getUserBySnsId(userInfo.id, 'naver');
+        const user = {
+            user_id: newUser.id,
+            username: newUser.username,
+            provider: newUser.provider,
+            accessToken: accessToken,
+        };
+        req.user = user;
+    }
+
+
+    return res.redirect('/user/login');
 };

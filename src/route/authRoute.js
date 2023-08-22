@@ -1,4 +1,8 @@
-const passport = require('passport')
+const passport = require('passport');
+const dotenv = require('dotenv');
+const user = require('../controller/userController');
+
+dotenv.config();
 module.exports = function (app) {
     //app.get(), app.post() ...
     app.get('/auth/kakao', passport.authenticate("kakao"));
@@ -15,4 +19,9 @@ module.exports = function (app) {
         }
     );
 
+    app.get('/auth/naver', (req, res) => {
+        const naverAuthUrl = `https://nid.naver.com/oauth2.0/authorize?response_type=code&client_id=${process.env.NAVER_CLIENT_ID}&redirect_uri=${process.env.NAVER_REDIRECT_URI}&state=YOUR_STATE_STRING`;
+        res.redirect(naverAuthUrl);
+    })
+    app.get("/naverLogin", user.naverLogin);
 }
