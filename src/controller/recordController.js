@@ -13,7 +13,8 @@ exports.postTodayChecks = async function (req, res) {
     console.log(todayDate);
 
     const checkDuplicate = await recordProvider.checkDuplicateData(user_id, todayDate);
-    if(checkDuplicate){
+
+    if(checkDuplicate.length !== 0){
         return res.send(errResponse(baseResponse.DUPLICATE_DATA));
     } else {
         const postTodayChecksResult = await recordService.todayChecks(user_id, todayDate, work_deg, health_deg, family_deg, relationship_deg, money_deg);
