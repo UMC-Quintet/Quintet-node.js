@@ -37,7 +37,7 @@ exports.getUserInfo = async function (req, res) {
             username: req.user.username
         }
         res.cookie('userData', JSON.stringify(userData), {maxAge: 7 * 24 * 60 * 60 * 1000}); //일단 7일간 유지되도록 설정
-        return res.redirect('/home');
+        return res.send(response(baseResponse.SUCCESS, userData));
     } else {
         return res.send(errResponse(baseResponse.USER_UNAUTHORIZED));
     }
