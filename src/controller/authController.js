@@ -22,7 +22,7 @@ exports.loginGoogleUser = async function (req, res) {
             console.log(exUser); //해당 유저 존재 시 콘솔 출력
         } else {
             console.log("해당 유저 없음");
-            await userService.insertNewUser(payload.name, payload.email, 'google', refreshToken, googleId);
+            await userService.insertNewUser(payload.name, payload.email, 'google', null, googleId);
         }
 
         exUser = userProvider.getUserBySnsId(googleId, 'google');
