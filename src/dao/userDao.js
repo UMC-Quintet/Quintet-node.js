@@ -1,7 +1,7 @@
 async function findUserBySnsId(connection, snsId, provider) {
-    const findKakaoUserQuery = `SELECT id, username, provider FROM user WHERE snsId = ? and provider = ?;`;
-    const kakaoUserRow = await connection.query(findKakaoUserQuery, [snsId, provider]);
-    return kakaoUserRow[0];
+    const findUserQuery = `SELECT id, username, email, provider FROM user WHERE snsId = ? and provider = ?;`;
+    const userRow = await connection.query(findUserQuery, [snsId, provider]);
+    return userRow[0];
 }
 
 async function insertNewUser(connection, newUserParams) {
