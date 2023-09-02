@@ -1,13 +1,13 @@
 const {response, errResponse} = require("../../config/response");
 const baseResponse = require("../../config/baseResponseStatus");
 const {OAuth2Client} = require('google-auth-library');
-const client = new OAuth2Client();
 const userProvider = require("../provider/userProvider");
 const userService = require("../service/userService");
 const dotenv = require("dotenv");
 
 dotenv.config();
 
+const client = new OAuth2Client(process.env.GOOGLE_CLIENT_ID);
 exports.loginGoogleUser = async function (req, res) {
     try {
         const ticket = await client.verifyIdToken({
