@@ -17,7 +17,7 @@ exports.loginGoogleUser = async function (req, res) {
         const payload = ticket.getPayload();
         const googleId = payload['sub']; //유저의 구글 SnsId
 
-        let exUser = userProvider.getUserBySnsId(googleId, 'google');
+        let exUser = await userProvider.getUserBySnsId(googleId, 'google');
         if(exUser){
             console.log(exUser); //해당 유저 존재 시 콘솔 출력
         } else {
@@ -25,7 +25,7 @@ exports.loginGoogleUser = async function (req, res) {
             await userService.insertNewUser(payload.name, payload.email, 'google', null, googleId);
         }
 
-        exUser = userProvider.getUserBySnsId(googleId, 'google');
+        exUser = await userProvider.getUserBySnsId(googleId, 'google');
         const token = await userProvider.getGoogleToken(exUser);
 
         return res.send(response(baseResponse.SUCCESS, token));
