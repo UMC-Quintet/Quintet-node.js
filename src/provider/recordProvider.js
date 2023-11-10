@@ -6,12 +6,7 @@ exports.getRecordsByDate = async function (user_id, year, month) {
     const recordsListResult = await recordDao.selectRecordsByDate(connection, user_id, year, month);
     connection.release();
 
-    return {
-        user_id: user_id,
-        year: year,
-        month: month,
-        records: recordsListResult
-    };
+    return recordsListResult;
 }
 
 exports.getRecordsByElement = async function (user_id, year, month, element) {
