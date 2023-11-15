@@ -11,7 +11,7 @@ async function todayRecords(connection, todayRecordParams) {
 }
 
 async function selectRecordsByDate(connection, user_id, year, month) {
-    const selectRecordsQuery = `select * from document where user_id = ? and year(date) and month(date);`;
+    const selectRecordsQuery = `select * from document where user_id = ? and year(date) = ? and month(date) = ?;`;
     const selectRecordsResult = await connection.query(selectRecordsQuery, [user_id, year, month]);
     return selectRecordsResult[0];
 }

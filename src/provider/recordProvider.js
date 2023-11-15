@@ -6,12 +6,7 @@ exports.getRecordsByDate = async function (user_id, year, month) {
     const recordsListResult = await recordDao.selectRecordsByDate(connection, user_id, year, month);
     connection.release();
 
-    return {
-        user_id: user_id,
-        year: year,
-        month: month,
-        records: recordsListResult
-    };
+    return recordsListResult;
 }
 
 exports.getRecordsByElement = async function (user_id, year, month, element) {
@@ -19,13 +14,7 @@ exports.getRecordsByElement = async function (user_id, year, month, element) {
     const recordsListResult = await recordDao.selectRecordsByElement(connection, user_id, year, month, element);
     connection.release();
 
-    return {
-        user_id: user_id,
-        year: year,
-        month: month,
-        element: element,
-        records: recordsListResult
-    };
+    return recordsListResult;
 }
 
 exports.checkDuplicateData = async function (user_id, date) {
