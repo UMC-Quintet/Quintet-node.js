@@ -26,9 +26,9 @@ exports.loginGoogleUser = async function (req, res) {
         }
 
         exUser = await userProvider.getUserBySnsId(googleId, 'google');
-        const token = await userProvider.getGoogleToken(exUser);
+        const tokens = await userProvider.getGoogleToken(exUser);
 
-        return res.send(response(baseResponse.SUCCESS, token));
+        return res.send(response(baseResponse.SUCCESS, tokens));
 
     } catch (e) { //유효성 검증에 실패했을 경우
         console.log(e);

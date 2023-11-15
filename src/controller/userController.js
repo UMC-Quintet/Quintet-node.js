@@ -29,20 +29,6 @@ function removeDuplicate(arr) {
     return result;
 }
 
-exports.getUserInfo = async function (req, res) {
-    if(req.isAuthenticated()){
-        const userData = {
-            logged_in: 'true',
-            user_id: req.user.user_id,
-            username: req.user.username
-        }
-        res.cookie('userData', JSON.stringify(userData), {maxAge: 7 * 24 * 60 * 60 * 1000}); //일단 7일간 유지되도록 설정
-        return res.send(response(baseResponse.SUCCESS, userData));
-    } else {
-        return res.send(errResponse(baseResponse.USER_UNAUTHORIZED));
-    }
-};
-
 exports.patchUserName = async function (req, res) {
     /*const username = req.user.username;
     const user_id = req.user.user_id;*/
@@ -56,13 +42,13 @@ exports.patchUserName = async function (req, res) {
     }
 };
 
-exports.deleteUser = async function (req, res) {
+/*exports.deleteUser = async function (req, res) {
     //const user_id = req.user.user_id;
     const user_id = req.query.user_id;
     await userService.deleteUserData(user_id);
 
     res.redirect('/user/logout');
-};
+};*/
 
 exports.postData = async (req, res) => {
     const user_id = req.body.user_id;
@@ -71,57 +57,4 @@ exports.postData = async (req, res) => {
     const localDataSave = await userService.postLocalData(user_id, userLocalData);
 
     return res.send(localDataSave);
-};
-
-exports.naverLogin = async (req, res) => {
-    const code = req.query.code;
-
-    const tokenResponse = await axios.post(
-        "https://nid.naver.com/oauth2.0/token",
-        qs.stringify({
-            grant_type: "authorization_code",
-            client_id: process.env.NAVER_CLIENT_ID,
-            client_secret: process.env.NAVER_CLIENT_SECRET,
-            code: code,
-            state: "YOUR_STATE_STRING",
-            redirect_uri: process.env.NAVER_REDIRECT_URI,
-        })
-    );
-    const  accessToken = tokenResponse.data.access_token; //TODO: 갱신 로직 추가
-
-    const userInfoResponse = await axios.get(
-        "https://openapi.naver.com/v1/nid/me",
-        {
-            headers: {
-                Authorization: `Bearer ${accessToken}`,
-            },
-        }
-    );
-
-    const userInfo = userInfoResponse.data.response;
-    let exUser = await userProvider.getUserBySnsId(userInfo.id, 'naver');
-    if(exUser) {
-        const user = {
-            user_id: exUser.id,
-            username: exUser.username,
-            provider: exUser.provider,
-            accessToken: accessToken,
-        };
-
-        req.user = user;
-    } else {
-        console.log("해당 유저 없음");
-        await userService.insertNewUser(userInfo.nickname, userInfo.email, 'naver', 'refreshtokens', userInfo.id); //refreshToken을 어떻게 발급받는지 몰라서 일단 임의의 값을 넣도록 함
-        const newUser = userProvider.getUserBySnsId(userInfo.id, 'naver');
-        const user = {
-            user_id: newUser.id,
-            username: newUser.username,
-            provider: newUser.provider,
-            accessToken: accessToken,
-        };
-        req.user = user;
-    }
-
-
-    return res.redirect('/user/login');
 };

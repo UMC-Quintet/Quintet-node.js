@@ -2,17 +2,14 @@ const {errResponse} = require("../../config/response");
 const baseResponse = require("../../config/baseResponseStatus");
 const axios = require("axios");
 const userProvider = require("../provider/userProvider");
-const interval = require("../passport/interval");
 
 module.exports = function (app) {
     const user = require("../controller/userController");
     //app.get(), app.post() ...
 
-    app.get('/user/login', user.getUserInfo);
-
     app.patch('/user', user.patchUserName);
 
-    app.get('/user/logout', async function (req, res, next) {
+    /*app.get('/user/logout', async function (req, res, next) {
         try {
             if(req.user){
                 console.log(typeof(req.user.provider));
@@ -46,9 +43,9 @@ module.exports = function (app) {
             console.log(`App - Session Error\n : ${err.message}`);
             res.send(errResponse(baseResponse.SESSION_ERROR));
         }
-    });
+    });*/
 
-    app.get('/user/delete', user.deleteUser);
+    //app.get('/user/delete', user.deleteUser);
 
     app.post('/user/data', user.postData); //비회원->회원 전환 라우트
 }

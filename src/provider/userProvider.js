@@ -1,6 +1,6 @@
 const { pool } = require("../../config/database");
 const userDao = require("../dao/userDao");
-const jwt = require("jsonwebtoken");
+const jwt = require("../../config/jwtModules");
 const dotenv = require("dotenv");
 
 dotenv.config();
@@ -32,8 +32,8 @@ exports.getSnsID = async function (user_id) { //카카오 로그아웃에서 이
     return findUserResult[0];
 };
 
-exports.getGoogleToken = function (user) { //토큰 생성하는 부분
-    return jwt.sign({
+exports.getGoogleToken = async function (user) { //토큰 생성하는 부분
+    const accessToken = await jwt.accessSign({
             id: user.id,
             username: user.username,
             email: user.email,
@@ -42,4 +42,8 @@ exports.getGoogleToken = function (user) { //토큰 생성하는 부분
         process.env.JWT_SECRET,
         {expiresIn: '30m'}
     );
+
+    const refreshToken = await jwt.refreshSign();
+
+    return {access: accessToken, refresh: refreshToken};
 };
