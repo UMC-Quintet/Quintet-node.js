@@ -30,12 +30,12 @@ exports.loginGoogleUser = async function (req, res) {
         }
 
         exUser = await userProvider.getUserBySnsId(googleId, 'google');
-        const tokens = await userProvider.getGoogleToken(exUser);
+        const accessToken = await userProvider.getGoogleToken(exUser);
 
         const refreshToken = await jwt.refreshSign();
         await userService.updateRefreshToken(exUser.id, refreshToken);
 
-        return res.header('Authorization', `Bearer ${tokens}`).send(response(baseResponse.SUCCESS));
+        return res.header('Authorization', `Bearer ${accessToken}`).send(response(baseResponse.SUCCESS));
 
     } catch (e) { //유효성 검증에 실패했을 경우
         console.log(e);
