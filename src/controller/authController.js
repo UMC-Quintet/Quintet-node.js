@@ -7,6 +7,7 @@ const auth = new appleAuth(appleConfig, appleConfig.private_key_path);
 const userProvider = require("../provider/userProvider");
 const userService = require("../service/userService");
 const dotenv = require("dotenv");
+const jwt = require('../../config/jwtModules');
 
 dotenv.config();
 
@@ -30,6 +31,9 @@ exports.loginGoogleUser = async function (req, res) {
 
         exUser = await userProvider.getUserBySnsId(googleId, 'google');
         const tokens = await userProvider.getGoogleToken(exUser);
+
+        const refreshToken = await jwt.refreshSign();
+        await userService.updateRefreshToken(exUser.id, refreshToken);
 
         return res.header('Authorization', `Bearer ${tokens}`).send(response(baseResponse.SUCCESS));
 
@@ -66,6 +70,8 @@ exports.loginTestUser = async function (req, res) {
 
         exUser = await userProvider.getUserBySnsId(testSnsId, 'test');
         const tokens = await userProvider.getGoogleToken(exUser);
+        const refreshToken = await jwt.refreshSign();
+        await userService.updateRefreshToken(exUser.id, refreshToken);
 
         return res.header('Authorization', `Bearer ${tokens}`).send(response(baseResponse.SUCCESS));
     } catch (e) {
