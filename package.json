@@ -19,6 +19,7 @@
   },
   "homepage": "https://github.com/UMC-Quintet/Quintet-node.js#readme",
   "dependencies": {
+    "apple-auth": "^1.0.9",
     "axios": "^1.4.0",
     "compression": "^1.7.4",
     "cookie-parser": "^1.4.6",
