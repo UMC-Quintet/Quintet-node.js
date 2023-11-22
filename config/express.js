@@ -1,15 +1,11 @@
 const express = require('express');
-const session = require('express-session')
 const compression = require('compression');
 const methodOverride = require('method-override');
-const passport = require('passport')
-const passportConfig = require('../src/passport');
-const cookieParser = require('cookie-parser');
-var cors = require('cors');
+const cors = require('cors');
 
 module.exports = function () {
     const app = express();
-    passportConfig(app);
+    //passportConfig(app);
 
     app.use(compression());
 
@@ -21,7 +17,7 @@ module.exports = function () {
 
     app.use(cors());
 
-    app.use(cookieParser())
+/*    app.use(cookieParser())
 
     app.use(session({
         secret: 'quintet secret value',
@@ -34,7 +30,7 @@ module.exports = function () {
     }));
 
     app.use(passport.initialize());
-    app.use(passport.session());
+    app.use(passport.session());*/
 
     app.get('/', () => {
         console.log("루트 페이지로 접속하셨습니다.");
