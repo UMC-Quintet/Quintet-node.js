@@ -33,7 +33,7 @@ exports.getSnsID = async function (user_id) { //카카오 로그아웃에서 이
 };
 
 exports.getGoogleToken = async function (user) { //토큰 생성하는 부분
-    const accessToken = await jwt.accessSign({
+    return await jwt.accessSign({
             id: user.id,
             username: user.username,
             email: user.email,
@@ -42,8 +42,4 @@ exports.getGoogleToken = async function (user) { //토큰 생성하는 부분
         process.env.JWT_SECRET,
         {expiresIn: '30m'}
     );
-
-    const refreshToken = await jwt.refreshSign();
-
-    return {access: accessToken, refresh: refreshToken};
 };
