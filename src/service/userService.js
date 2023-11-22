@@ -65,7 +65,7 @@ exports.updateRefreshToken = async function (user_id, refreshToken) {
 
         return response(baseResponse.SUCCESS);
     } catch (err) {
-        console.log(`App - deleteUserData Service error\n: ${err.message}`);
+        console.log(`App - updateRefreshToken Service error\n: ${err.message}`);
         return errResponse(baseResponse.DB_ERROR);
     }
 };
