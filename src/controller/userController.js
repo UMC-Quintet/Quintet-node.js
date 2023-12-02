@@ -2,8 +2,8 @@ const baseResponse = require("../../config/baseResponseStatus");
 const {response, errResponse} = require("../../config/response");
 const userService = require("../../src/service/userService");
 const userProvider = require("../../src/provider/userProvider");
-const axios = require('axios');
 const dotenv = require('dotenv');
+const customJWT = require("../../config/jwtModules");
 
 dotenv.config();
 function removeDuplicate(arr) {
@@ -29,16 +29,29 @@ function removeDuplicate(arr) {
     return result;
 }
 
-exports.patchUserName = async function (req, res) {
-    /*const username = req.user.username;
-    const user_id = req.user.user_id;*/
-    const {user_id, username} = req.body;
+exports.refresh = async function (req, res) {
+    const refreshToken = req.body.refreshToken;
+    const decode = await customJWT.refreshVerify(refreshToken, req.user_id);
+    if (decode.valid) {
+        const userInfo = await userProvider.getUserById(req.user_id);
+        const accessToken = await userProvider.getAccessToken(userInfo.id);
+        const refreshToken = await customJWT.refreshSign();
+        await userService.updateRefreshToken(userInfo.id, refreshToken);
 
-    if(username.length > 10) {
+        return res.header('Authorization', `Bearer ${accessToken}`).send(response(baseResponse.SUCCESS));
+    } else {
+        return res.send(errResponse(baseResponse.INVALID_TOKEN));
+    }
+}
+
+exports.patchNickName = async function (req, res) {
+    const nickname = req.body.nickname;
+
+    if(nickname.length > 10) {
         return res.send(errResponse(baseResponse.USERNAME_LENGTH))
     } else {
-        await userService.updateUserName(user_id, username);
-        return res.send(response(baseResponse.SUCCESS, { username : username }));
+        await userService.updateUserName(req.user_id, nickname);
+        return res.send(response(baseResponse.SUCCESS, { username : nickname }));
     }
 };
 

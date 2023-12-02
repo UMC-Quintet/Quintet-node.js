@@ -1,16 +1,16 @@
-const jwt = require('./jwtModules');
+const customJWT = require('./jwtModules');
 const {response, errResponse} = require('./response');
 const baseResponse = require('./baseResponseStatus');
 const dotenv = require('dotenv');
 dotenv.config()
 
-exports.authJWT = async (req, res, next) => {
+exports.authChecker = async (req, res, next) => {
     if (req.headers.authorization) {
         const token = req.headers.authorization.split('Bearer ')[1];
         if (!token) //토큰 없음
             return res.send(errResponse(baseResponse.TOKEN_NOT_EXIST));
 
-        const payload = await jwt.accessVerify(token);
+        const payload = await customJWT.accessVerify(token);
         if (payload.valid === false) { //토큰 유효 X
             if (payload.message === 'expired token') {
                 console.log('jwtMiddleware - expired token');
@@ -34,5 +34,8 @@ exports.authJWT = async (req, res, next) => {
 
         req.user_id = payload.id;
         next();
+    } else {
+        console.log('jwtMiddleware - header.Authorization not exist');
+        return res.send(errResponse(baseResponse.AUTHORIZATION_NOT_FOUND));
     }
 }

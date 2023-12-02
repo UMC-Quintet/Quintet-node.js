@@ -2,12 +2,14 @@ const {errResponse} = require("../../config/response");
 const baseResponse = require("../../config/baseResponseStatus");
 const axios = require("axios");
 const userProvider = require("../provider/userProvider");
+const {authChecker} = require("../../config/jwtMiddleware");
+const user = require("../controller/userController");
 
 module.exports = function (app) {
-    const user = require("../controller/userController");
     //app.get(), app.post() ...
+    app.post('/auth/refresh', authChecker, user.refresh);
 
-    app.patch('/user', user.patchUserName);
+    app.patch('/user', authChecker, user.patchNickName);
 
     /*app.get('/user/logout', async function (req, res, next) {
         try {
@@ -47,5 +49,5 @@ module.exports = function (app) {
 
     //app.get('/user/delete', user.deleteUser);
 
-    app.post('/user/data', user.postData); //비회원->회원 전환 라우트
+    app.post('/user/data', authChecker, user.postData); //비회원->회원 전환 라우트
 }

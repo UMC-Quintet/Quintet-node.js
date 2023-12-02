@@ -1,11 +1,12 @@
+const {authChecker} = require('../../config/jwtMiddleware');
 module.exports = function (app) {
     const record = require("../controller/recordController");
     //app.get(), app.post() ...
-    app.post('/record', record.postTodayChecks);
+    app.post('/record', authChecker, record.postTodayChecks);
 
-    app.patch('/record', record.patchTodayRecord);
+    app.patch('/record', authChecker, record.patchTodayRecord);
 
-    app.get('/records/date', record.getRecordsByDate);
+    app.get('/records/date', authChecker, record.getRecordsByDate);
 
-    app.get('/records/element', record.getRecordsByElement);
+    app.get('/records/element', authChecker, record.getRecordsByElement);
 }
