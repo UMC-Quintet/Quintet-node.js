@@ -10,8 +10,8 @@ function getWeekRange() {
   const day = KST.day(); // 요일 (0: 일요일, 1: 월요일, ..., 6: 토요일)
   const diff = KST.date() - day + (day === 0 ? -6 : 0);
 
-  const startOfWeek = KST.date(diff).format('YYYY-MM-DD'); // 해당 주의 첫 날짜
-  const endOfWeek = KST.date(diff+6).format('YYYY-MM-DD'); // 해당 주의 마지막 날짜
+  const startOfWeek = KST.clone().date(diff).format('YYYY-MM-DD'); // 해당 주의 첫 날짜
+  const endOfWeek = KST.clone().date(diff+6).format('YYYY-MM-DD'); // 해당 주의 마지막 날짜
 
   return { start: startOfWeek, end: endOfWeek };
 }
