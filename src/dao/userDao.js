@@ -1,23 +1,23 @@
 async function findUserBySnsId(connection, snsId, provider) {
-    const findUserQuery = `SELECT id, username, email, provider FROM user WHERE snsId = ? and provider = ?;`;
+    const findUserQuery = `SELECT id, nickname, email, provider FROM user WHERE snsId = ? and provider = ?;`;
     const userRow = await connection.query(findUserQuery, [snsId, provider]);
     return userRow[0];
 }
 
 async function insertNewUser(connection, newUserParams) {
-    const insertNewUserQuery = `insert into user (username, email, provider, refreshToken, snsId) values (?, ?, ?, ?, ?);`;
+    const insertNewUserQuery = `insert into user (name, nickname, email, provider, refreshToken, snsId) values (?, ?, ?, ?, ?, ?);`;
     return await connection.query(insertNewUserQuery, newUserParams);
 }
 
 async function findUserById(connection, id) {
-    const findUserQuery = `SELECT id, username, provider FROM user WHERE id = ?;`;
+    const findUserQuery = `SELECT id, nickname, email, provider FROM user WHERE id = ?;`;
     const weeklySumRow = await connection.query(findUserQuery,id);
     return weeklySumRow[0];
 }
 
-async function updateUserName(connection, user_id, username) {
-    const findUserQuery = `UPDATE user SET username = ? WHERE id = ?;`;
-    const weeklySumRow = await connection.query(findUserQuery,[username, user_id]);
+async function updateUserName(connection, user_id, nickname) {
+    const findUserQuery = `UPDATE user SET nickname = ? WHERE id = ?;`;
+    const weeklySumRow = await connection.query(findUserQuery,[nickname, user_id]);
     return weeklySumRow[0];
 }
 

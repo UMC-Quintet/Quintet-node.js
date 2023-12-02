@@ -8,11 +8,11 @@ dotenv.config()
 
 // Service: Create, Update, Delete 비즈니스 로직 처리
 
-exports.insertNewUser = async function (username, email, provider, refreshToken, snsId) {
+exports.insertNewUser = async function (name, nickname, email, provider, refreshToken, snsId) {
     try {
         const connection = await pool.getConnection(async (conn) => conn);
 
-        const newUserParams = [username, email, provider, refreshToken, snsId]
+        const newUserParams = [name, nickname, email, provider, refreshToken, snsId]
         const insertNewUserResult = await userDao.insertNewUser(connection, newUserParams);
         console.log(insertNewUserResult);
         connection.release();
@@ -24,14 +24,14 @@ exports.insertNewUser = async function (username, email, provider, refreshToken,
     }
 };
 
-exports.updateUserName = async function (user_id, username) {
+exports.updateUserName = async function (user_id, nickname) {
     try {
         const connection = await pool.getConnection(async (conn) => conn);
 
-        const updateUserNameResult = await userDao.updateUserName(connection, user_id, username);
+        const updateUserNameResult = await userDao.updateUserName(connection, user_id, nickname);
         console.log(updateUserNameResult);
         connection.release();
-        const result = { user_id : user_id, newUserName : username }
+        const result = { user_id : user_id, newUserName : nickname }
 
         return response(baseResponse.SUCCESS, result);
     } catch (err) {

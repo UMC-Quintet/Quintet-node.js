@@ -6,18 +6,18 @@ const moment = require('moment-timezone');
 
 exports.postTodayChecks = async function (req, res) {
     //const user_id = req.user.user_id;
-    const {user_id, work_deg, health_deg, family_deg, relationship_deg, money_deg} = req.body;
+    const { work_deg, health_deg, family_deg, relationship_deg, money_deg } = req.body;
 
     const KST = moment().tz('Asia/Seoul');
     const todayDate = KST.format('YYYY-MM-DD');
     console.log(todayDate);
 
-    const checkDuplicate = await recordProvider.checkDuplicateData(user_id, todayDate);
+    const checkDuplicate = await recordProvider.checkDuplicateData(req.user_id, todayDate);
 
     if(checkDuplicate.length !== 0){
         return res.send(errResponse(baseResponse.DUPLICATE_DATA));
     } else {
-        const postTodayChecksResult = await recordService.todayChecks(user_id, todayDate, work_deg, health_deg, family_deg, relationship_deg, money_deg);
+        const postTodayChecksResult = await recordService.todayChecks(req.user_id, todayDate, work_deg, health_deg, family_deg, relationship_deg, money_deg);
 
         return res.send(postTodayChecksResult);
     }
@@ -25,22 +25,22 @@ exports.postTodayChecks = async function (req, res) {
 
 exports.patchTodayRecord = async function (req, res) {
     //const user_id = req.user.user_id;
-    const {user_id, work_doc, health_doc, family_doc, relationship_doc, money_doc } = req.body;
+    const { work_doc, health_doc, family_doc, relationship_doc, money_doc } = req.body;
 
     const KST = moment().tz('Asia/Seoul');
     const todayDate = KST.format('YYYY-MM-DD');
     console.log(todayDate);
 
-    const patchTodayRecordsResult = await recordService.todayRecords(user_id, todayDate, work_doc, health_doc, family_doc, relationship_doc, money_doc);
+    const patchTodayRecordsResult = await recordService.todayRecords(req.user_id, todayDate, work_doc, health_doc, family_doc, relationship_doc, money_doc);
 
     return res.send(patchTodayRecordsResult);
 };
 
 exports.getRecordsByDate = async function (req, res) {
     //const user_id = req.user.user_id;
-    const { user_id, year, month } = req.query;
+    const { year, month } = req.query;
 
-    const recordsListByDate = await recordProvider.getRecordsByDate(user_id, year, month);
+    const recordsListByDate = await recordProvider.getRecordsByDate(req.user_id, year, month);
 
     return res.send(response(baseResponse.SUCCESS, recordsListByDate));
 };

@@ -12,6 +12,7 @@ module.exports = {
     INVALID_TOKEN : { "isSuccess": false, "code": 400, "message": "유효하지 않은 토큰입니다." },
     TOKEN_NOT_EXIST : { "isSuccess": false, "code": 400, "message": "토큰이 존재하지 않습니다." },
     EXPIRED_TOKEN : { "isSuccess": false, "code": 400, "message": "만료된 토큰입니다." },
+    AUTHORIZATION_NOT_FOUND : { "isSuccess": false, "code": 400, "message": "Authorization이 존재하지 않습니다." },
     // Response error
 
     //Connection, Transaction 등의 서버 오류

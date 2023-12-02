@@ -8,9 +8,9 @@ const moment = require("moment-timezone");
 function getWeekRange() {
   const KST = moment().tz('Asia/Seoul');
   const day = KST.day(); // 요일 (0: 일요일, 1: 월요일, ..., 6: 토요일)
-  const diff = KST.date() - day + (day === 0 ? -6 : 0); // 해당 주의 첫 날짜
+  const diff = KST.date() - day + (day === 0 ? -6 : 0);
 
-  const startOfWeek = KST.date(diff).format('YYYY-MM-DD');
+  const startOfWeek = KST.date(diff).format('YYYY-MM-DD'); // 해당 주의 첫 날짜
   const endOfWeek = KST.date(diff+6).format('YYYY-MM-DD'); // 해당 주의 마지막 날짜
 
   return { start: startOfWeek, end: endOfWeek };
@@ -18,7 +18,7 @@ function getWeekRange() {
 
 exports.getHome = async function getQuintetCheckRecordsAPI(req, res) {
   try {
-    const userId = req.query.user_id;
+    const userId = req.user_id;
     const { start, end } = getWeekRange();
     const quintetCheckResult = await homeProvider.retrieveQuintetCheck(userId, start, end);
     const result = {
