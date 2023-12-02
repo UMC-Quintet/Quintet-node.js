@@ -1,6 +1,10 @@
 # Default ignored files
 /shelf/
 /.idea/workspace.xml
+/.idea/sshConfigs.xml
+/.idea/deployment.xml
+/.idea/webServers.xml
+/.idea/jsLibraryMappings.xml
 #/misc.xml
 #/modules.xml
 /node_modules/
