@@ -5,6 +5,7 @@ const cors = require('cors');
 
 module.exports = function () {
     const app = express();
+
     //passportConfig(app);
 
     app.use(compression());

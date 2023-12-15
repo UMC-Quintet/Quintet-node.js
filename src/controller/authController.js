@@ -7,6 +7,7 @@ const dotenv = require("dotenv");
 const customJWT = require('../../config/jwtModules');
 const jwt = require('jsonwebtoken');
 const jwksClient = require("jwks-rsa");
+const redisClient = require('../../config/redisConfig');
 
 dotenv.config();
 
@@ -123,7 +124,12 @@ exports.loginTestUser = async function (req, res) {
         exUser = await userProvider.getUserBySnsId(testSnsId, 'test');
         const tokens = await userProvider.getAccessToken(exUser);
         const refreshToken = await customJWT.refreshSign();
-        await userService.updateRefreshToken(exUser.id, refreshToken);
+        await redisClient.set(`${exUser.id}`, `${refreshToken}`, { EX: 365 * 24 * 60 * 60 }); //1년 만료
+        const expire = await redisClient.ttl(`${exUser.id}`);
+        console.log(expire);
+        const testval = await redisClient.get(`${exUser.id}`);
+        console.log(testval);
+        //await userService.updateRefreshToken(exUser.id, refreshToken);
 
         return res.header('Authorization', `Bearer ${tokens}`).send(response(baseResponse.SUCCESS));
     } catch (e) {
