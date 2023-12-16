@@ -33,8 +33,9 @@ module.exports = function () {
     app.use(passport.initialize());
     app.use(passport.session());*/
 
-    app.get('/', () => {
+    app.get('/', (req, res) => {
         console.log("루트 페이지로 접속하셨습니다.");
+        res.send('Hi Quintet');
     });
 
     require('../src/route/staticRoute')(app);
