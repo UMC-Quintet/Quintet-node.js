@@ -21,6 +21,7 @@
   "dependencies": {
     "apple-auth": "^1.0.9",
     "axios": "^1.4.0",
+    "base64url": "^3.0.1",
     "compression": "^1.7.4",
     "cookie-parser": "^1.4.6",
     "cors": "^2.8.5",
@@ -35,7 +36,8 @@
     "method-override": "^3.0.0",
     "moment-timezone": "^0.5.43",
     "mysql2": "^3.0.0",
-    "rand-token": "^1.0.1"
+    "rand-token": "^1.0.1",
+    "redis": "^4.6.11"
   },
   "devDependencies": {
     "nodemon": "^3.0.1"

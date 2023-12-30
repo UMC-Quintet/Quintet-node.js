@@ -9,6 +9,7 @@ module.exports = {
     USER_UNAUTHORIZED : { "isSuccess": false, "code": 401, "message": "인증되지 않았습니다."},
     USERNAME_LENGTH : { "isSuccess": false, "code": 400, "message": "이름은 10자 이내로 설정해주세요."},
     DUPLICATE_DATA : { "isSuccess": false, "code": 400, "message": "퀸텟 체크는 1일 1회만 가능합니다."},
+    INVALID_IDTOKEN : { "isSuccess": false, "code": 400, "message": "유효하지 않은 ID 토큰입니다." },
     INVALID_TOKEN : { "isSuccess": false, "code": 400, "message": "유효하지 않은 토큰입니다." },
     TOKEN_NOT_EXIST : { "isSuccess": false, "code": 400, "message": "토큰이 존재하지 않습니다." },
     EXPIRED_TOKEN : { "isSuccess": false, "code": 400, "message": "만료된 토큰입니다." },

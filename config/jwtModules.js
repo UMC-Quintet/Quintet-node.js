@@ -1,6 +1,7 @@
 const randToken = require('rand-token');
 const jwt = require('jsonwebtoken');
 const dotenv = require('dotenv');
+const redisClient = require('./redisConfig');
 dotenv.config();
 const secret = process.env.JWT_SECRET;
 
@@ -40,7 +41,7 @@ module.exports = {
     },
 
     refreshVerify: async (token, userId) => { //DB에 있는 값과 같은지 확인
-        let dbRefresh = null; //db에서 가져오는거
+        let dbRefresh = redisClient.get(`${userId}`); //db에서 가져오는거
         let decode = null;
         try {
             if (dbRefresh === token) { //db 속 토큰과 같은지

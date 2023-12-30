@@ -18,3 +18,7 @@
 # https cert #
 localhost-key.pem
 localhost.pem
+/.idea/deployment.xml
+/.idea/jsLibraryMappings.xml
+/.idea/sshConfigs.xml
+/.idea/webServers.xml

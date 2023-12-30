@@ -4,6 +4,7 @@ const userService = require("../../src/service/userService");
 const userProvider = require("../../src/provider/userProvider");
 const dotenv = require('dotenv');
 const customJWT = require("../../config/jwtModules");
+const redisClient = require('../../config/redisConfig');
 
 dotenv.config();
 function removeDuplicate(arr) {
@@ -34,11 +35,11 @@ exports.refresh = async function (req, res) {
     const decode = await customJWT.refreshVerify(refreshToken, req.user_id);
     if (decode.valid) {
         const userInfo = await userProvider.getUserById(req.user_id);
-        const accessToken = await userProvider.getAccessToken(userInfo.id);
-        const refreshToken = await customJWT.refreshSign();
-        await userService.updateRefreshToken(userInfo.id, refreshToken);
+        const accessToken = await userProvider.createAccessToken(userInfo.id); //atk 발급
+        const newRefreshToken = await customJWT.refreshSign(); //rtk 발급
+        await redisClient.set(`${userInfo.id}`, `${newRefreshToken}`, { EX: 365 * 24 * 60 * 60 }); //rtk 갱신
 
-        return res.header('Authorization', `Bearer ${accessToken}`).send(response(baseResponse.SUCCESS));
+        return res.header('Authorization', `Bearer ${accessToken}`).send(response(baseResponse.SUCCESS, newRefreshToken));
     } else {
         return res.send(errResponse(baseResponse.INVALID_TOKEN));
     }
