@@ -32,7 +32,7 @@ exports.getSnsID = async function (user_id) { //카카오 로그아웃에서 이
     return findUserResult[0];
 };
 
-exports.getAccessToken = async function (user) { //토큰 생성하는 부분
+exports.createAccessToken = async function (user) { //토큰 생성하는 부분
     return await customeJWT.accessSign({
             id: user.id,
             username: user.username,
