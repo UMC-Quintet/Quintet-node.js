@@ -6,7 +6,7 @@ const moment = require('moment-timezone');
 
 exports.postTodayChecks = async function (req, res) {
     //const user_id = req.user.user_id;
-    const { work_deg, health_deg, family_deg, relationship_deg, money_deg } = req.body;
+    const { work_deg, health_deg, family_deg, relationship_deg, money_deg, work_doc, health_doc, family_doc, relationship_doc, money_doc } = req.body;
 
     const KST = moment().tz('Asia/Seoul');
     const todayDate = KST.format('YYYY-MM-DD');
@@ -17,23 +17,11 @@ exports.postTodayChecks = async function (req, res) {
     if(checkDuplicate.length !== 0){
         return res.send(errResponse(baseResponse.DUPLICATE_DATA));
     } else {
-        const postTodayChecksResult = await recordService.todayChecks(req.user_id, todayDate, work_deg, health_deg, family_deg, relationship_deg, money_deg);
+        const params = [ req.user_id, todayDate, work_deg, health_deg, family_deg, relationship_deg, money_deg, work_doc, health_doc, family_doc, relationship_doc, money_doc ];
+        const postTodayChecksResult = await recordService.todayChecks(params);
 
         return res.send(postTodayChecksResult);
     }
-};
-
-exports.patchTodayRecord = async function (req, res) {
-    //const user_id = req.user.user_id;
-    const { work_doc, health_doc, family_doc, relationship_doc, money_doc } = req.body;
-
-    const KST = moment().tz('Asia/Seoul');
-    const todayDate = KST.format('YYYY-MM-DD');
-    console.log(todayDate);
-
-    const patchTodayRecordsResult = await recordService.todayRecords(req.user_id, todayDate, work_doc, health_doc, family_doc, relationship_doc, money_doc);
-
-    return res.send(patchTodayRecordsResult);
 };
 
 exports.getRecordsByDate = async function (req, res) {
