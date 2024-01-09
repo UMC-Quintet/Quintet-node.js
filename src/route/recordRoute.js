@@ -4,8 +4,6 @@ module.exports = function (app) {
     //app.get(), app.post() ...
     app.post('/record', authChecker, record.postTodayChecks);
 
-    app.patch('/record', authChecker, record.patchTodayRecord);
-
     app.get('/records/date', authChecker, record.getRecordsByDate);
 
     app.get('/records/element', authChecker, record.getRecordsByElement);

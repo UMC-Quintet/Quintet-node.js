@@ -1,6 +1,6 @@
 async function todayChecks(connection, todayCheckParams) {
-    const todayChecksQuery = `insert into document (user_id, date, work_deg, health_deg, family_deg, relationship_deg, money_deg)
-                              values (?, ?, ?, ?, ?, ?, ?);`;
+    const todayChecksQuery = `insert into document (user_id, date, work_deg, health_deg, family_deg, relationship_deg, money_deg, work_doc, health_doc, family_doc, relationship_doc, money_doc)
+                              values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);`;
     return await connection.query(todayChecksQuery, todayCheckParams);
 }
 
