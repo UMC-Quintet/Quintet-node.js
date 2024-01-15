@@ -10,9 +10,9 @@ exports.postTodayChecks = async function (req, res) {
 
     const KST = moment().tz('Asia/Seoul');
     const todayDate = KST.format('YYYY-MM-DD');
-    console.log(todayDate);
+    console.log(new Date(todayDate.toString()));
 
-    const checkDuplicate = await recordProvider.checkDuplicateData(req.user_id, todayDate);
+    const checkDuplicate = await recordProvider.checkDuplicateData(req.user_id, new Date(todayDate.toString()));
 
     if(checkDuplicate.length !== 0){
         return res.send(errResponse(baseResponse.DUPLICATE_DATA));
@@ -35,9 +35,9 @@ exports.getRecordsByDate = async function (req, res) {
 
 exports.getRecordsByElement = async function (req, res) {
     //const user_id = req.user.user_id;
-    const {user_id, year, month, element } = req.query;
+    const { year, month, element } = req.query;
 
-    const recordsListByElement = await recordProvider.getRecordsByElement(user_id, year, month, element);
+    const recordsListByElement = await recordProvider.getRecordsByElement(req.user_id, year, month, element);
 
     return res.send(response(baseResponse.SUCCESS, recordsListByElement));
 };
