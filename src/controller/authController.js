@@ -182,7 +182,7 @@ exports.loginTestUser = async function (req, res) {
         const testval = await redisClient.get(`${exUser.id}`);
         console.log(testval);
 
-        return res.header('Authorization', `Bearer ${accessToken}`).send(response(baseResponse.SUCCESS));
+        return res.header('Authorization', `Bearer ${accessToken}`).send(response(baseResponse.SUCCESS, refreshToken));
     } catch (e) {
         console.log(e);
         return res.send(errResponse(baseResponse.INVALID_TOKEN));
