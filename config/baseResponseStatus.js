@@ -19,5 +19,5 @@ module.exports = {
     //Connection, Transaction 등의 서버 오류
     DB_ERROR : { "isSuccess": false, "code": 500, "message": "데이터 베이스 에러"},
     SERVER_ERROR : { "isSuccess": false, "code": 500, "message": "서버 에러"},
-    SESSION_ERROR : { "isSuccess": false, "code": 500, "message": "세션 에러"}
+    LOG_OUT_ERROR : { "isSuccess": false, "code": 500, "message": "로그아웃 과정에서 에러가 발생했습니다."}
 }
