@@ -66,7 +66,7 @@ exports.patchNickName = async function (req, res) {
 
 exports.logOut = async function (req, res) {
     try {
-        localStorage.removeItem(`${req.user_id}`);
+        await redisClient.del(`${req.user_id}`); //rtk 없애기
 
         return res.send(response(baseResponse.SUCCESS));
     } catch (err) {
@@ -76,9 +76,15 @@ exports.logOut = async function (req, res) {
 }
 
 exports.deleteUser = async function (req, res) {
-    const deleteUserResult = await userService.deleteUserData(req.user_id);
+    try {
+        await redisClient.del(`${req.user_id}`); //rtk 없애기
+        const deleteUserResult = await userService.deleteUserData(req.user_id); //유저 관련 db 정보 없애기
 
-    return res.send(deleteUserResult);
+        return res.send(deleteUserResult);
+    } catch (err) {
+        console.log('App - Withdraw Err: ' + err);
+        return res.send(errResponse(baseResponse.LOG_OUT_ERROR));
+    }
 };
 
 exports.postData = async (req, res) => {
