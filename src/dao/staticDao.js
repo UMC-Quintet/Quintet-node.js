@@ -1,8 +1,9 @@
 async function weeklySum(connection, user_id, startDate, endDate) {
     const weeklySumQuery = `SELECT sum(work_deg) as work_deg, sum(health_deg) as health_deg, sum(family_deg) as family_deg, sum(relationship_deg) as relationship_deg, sum(money_deg) as money_deg
                             FROM document
-                            WHERE user_id = ? and date between ? and ?;`;
+                            WHERE user_id = ? and date between ? and ?`;
     const weeklySumRow = await connection.query(weeklySumQuery, [user_id, startDate, endDate]);
+    console.log(weeklySumRow);
     return weeklySumRow[0];
 }
 
