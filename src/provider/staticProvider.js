@@ -3,17 +3,13 @@ const { pool } = require("../../config/database");
 const staticDao = require("../dao/staticDao");
 
 // Provider: Read 비즈니스 로직 처리
-/*
-exports.guideApi = async function (param) {
-};
-*/
 exports.weeklySum = async function (user_id, startDate, endDate) {
     const connection = await pool.getConnection(async (conn) => conn);
     const weeklySumResult = await staticDao.weeklySum(connection, user_id, startDate, endDate);
     connection.release();
 
-    const maxVals = findAllMaxKeys(weeklySumResult[0]);
-    const maxValList = maxVals.map((key) => keyText[key]);
+    /*const maxVals = findAllMaxKeys(weeklySumResult[0]);
+    const maxValList = maxVals.map((key) => keyText[key]);*/
 
     const result = degToPer(weeklySumResult[0]);
     return {
@@ -25,7 +21,6 @@ exports.weeklySum = async function (user_id, startDate, endDate) {
         family_per: result.family_per,
         relationship_per: result.relationship_per,
         money_per: result.money_per,
-        maxVals: maxValList
     };
 }
 
@@ -34,8 +29,8 @@ exports.monthlySum = async function (user_id, year, month) {
     const monthlySumResult = await staticDao.monthlySum(connection, user_id, year, month);
     connection.release();
 
-    const maxVals = findAllMaxKeys(monthlySumResult[0]);
-    const maxValList = maxVals.map((key) => keyText[key]);
+    /*const maxVals = findAllMaxKeys(monthlySumResult[0]);
+    const maxValList = maxVals.map((key) => keyText[key]);*/
 
     const result = degToPer(monthlySumResult[0]);
     return {
@@ -47,7 +42,6 @@ exports.monthlySum = async function (user_id, year, month) {
         family_per: result.family_per,
         relationship_per: result.relationship_per,
         money_per: result.money_per,
-        maxVals: maxValList
     };
 }
 
@@ -56,8 +50,8 @@ exports.annualSum = async function (user_id, year) {
     const annualSumResult = await staticDao.annualSum(connection, user_id, year);
     connection.release();
 
-    const maxVals = findAllMaxKeys(annualSumResult[0]);
-    const maxValList = maxVals.map((key) => keyText[key]);
+    /*const maxVals = findAllMaxKeys(annualSumResult[0]);
+    const maxValList = maxVals.map((key) => keyText[key]);*/
 
     const result = degToPer(annualSumResult[0]);
     return {
@@ -68,7 +62,6 @@ exports.annualSum = async function (user_id, year) {
         family_per: result.family_per,
         relationship_per: result.relationship_per,
         money_per: result.money_per,
-        maxVals: maxValList
     };
 }
 
