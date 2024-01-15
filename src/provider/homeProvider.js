@@ -6,5 +6,5 @@ exports.retrieveQuintetCheck = async function (userId, startDate, endDate) {
   const connection = await pool.getConnection(async (conn) => conn);
   const quintetCheckResult = await homeDao.selectQuintet(connection, userId, startDate, endDate);
   connection.release();
-  return quintetCheckResult[0];
+  return quintetCheckResult;
 }
