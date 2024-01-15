@@ -44,7 +44,7 @@ exports.deleteUserData = async function (user_id) {
     try {
         const connection = await pool.getConnection(async (conn) => conn);
 
-        const deleteUserDataResult = await userDao.deleteUserData(connection, user_id);
+        const deleteUserDataResult = await userDao.deleteUser(connection, user_id);
         console.log(deleteUserDataResult);
         connection.release();
 
