@@ -45,27 +45,44 @@ exports.refresh = async function (req, res) {
     }
 }
 
+exports.getProfile = async function (req, res) {
+    const userProfile = await userProvider.getUserById(req.user_id);
+
+    return res.send(response(baseResponse.SUCCESS, userProfile));
+}
+
 exports.patchNickName = async function (req, res) {
-    const nickname = req.body.nickname;
+    const nickname = req.body.newNickname;
 
     if(nickname.length > 10) {
-        return res.send(errResponse(baseResponse.USERNAME_LENGTH))
+        return res.send(errResponse(baseResponse.USERNAME_LENGTH));
     } else {
         await userService.updateUserName(req.user_id, nickname);
-        return res.send(response(baseResponse.SUCCESS, { username : nickname }));
+        const changeNickname = await userProvider.getUserNicknameById(req.user_id);
+
+        return res.send(response(baseResponse.SUCCESS, changeNickname));
     }
 };
 
-/*exports.deleteUser = async function (req, res) {
-    //const user_id = req.user.user_id;
-    const user_id = req.query.user_id;
-    await userService.deleteUserData(user_id);
+exports.logOut = async function (req, res) {
+    try {
+        localStorage.removeItem(`${req.user_id}`);
 
-    res.redirect('/user/logout');
-};*/
+        return res.send(response(baseResponse.SUCCESS));
+    } catch (err) {
+        console.log('App - Log Out Err: ' + err);
+        return res.send(errResponse(baseResponse.LOG_OUT_ERROR));
+    }
+}
+
+exports.deleteUser = async function (req, res) {
+    const deleteUserResult = await userService.deleteUserData(req.user_id);
+
+    return res.send(deleteUserResult);
+};
 
 exports.postData = async (req, res) => {
-    const user_id = req.body.user_id;
+    const user_id = req.user_id;
     const userLocalData = removeDuplicate(req.body.data);
 
     const localDataSave = await userService.postLocalData(user_id, userLocalData);

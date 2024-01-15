@@ -21,18 +21,16 @@ async function updateUserName(connection, user_id, nickname) {
     return weeklySumRow[0];
 }
 
-async function deleteUserData(connection, user_id) {
-    const delDocumentQuery = `DELETE from document WHERE user_id = ?;`;
+async function findUserNicknameById(connection, id) {
+    const findUserNicknameQuery = `SELECT nickname FROM user WHERE id = ?;`;
+    const weeklySumRow = await connection.query(findUserNicknameQuery,id);
+    return weeklySumRow[0];
+}
+
+async function deleteUser(connection, user_id) {
     const delUserQuery = `DELETE from user WHERE id = ?;`;
 
-    try{
-        await connection.query(delDocumentQuery, user_id);
-        const deleteUserResult = await connection.query(delUserQuery, user_id);
-        return deleteUserResult[0];
-    } catch (err) {
-        console.log(err);
-    }
-    const delUserResultRow = await connection.query(delDocumentQuery, [user_id, user_id]);
+    const delUserResultRow = await connection.query(delUserQuery, user_id);
     return delUserResultRow[0];
 }
 
@@ -59,7 +57,8 @@ module.exports = {
     insertNewUser,
     findUserById,
     updateUserName,
-    deleteUserData,
+    findUserNicknameById,
+    deleteUser,
     updateRefreshToken,
     findSnsId,
     insertLocalData
