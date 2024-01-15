@@ -13,7 +13,7 @@ module.exports = {
             email: user.email,
             provider: user.provider
         };
-        return jwt.sign(payload, secret, {algorithm: 'HS256', expiresIn: '30m'});
+        return jwt.sign(payload, secret, {algorithm: 'HS256', expiresIn: '7d'});
     },
 
     accessVerify: async (token) => {
