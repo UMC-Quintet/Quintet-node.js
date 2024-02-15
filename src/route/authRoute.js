@@ -9,5 +9,7 @@ module.exports = function (app) {
 
     app.post('/auth/apple', auth.loginAppleUser);
 
+    app.post('/auth/kakao', auth.loginKakaoUser);
+
     app.post('/auth/test', auth.loginTestUser);
 }

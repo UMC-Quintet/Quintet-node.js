@@ -1,13 +1,9 @@
-const {errResponse} = require("../../config/response");
-const baseResponse = require("../../config/baseResponseStatus");
-const axios = require("axios");
-const userProvider = require("../provider/userProvider");
 const {authChecker} = require("../../config/jwtMiddleware");
 const user = require("../controller/userController");
 
 module.exports = function (app) {
     //app.get(), app.post() ...
-    app.post('/auth/refresh', authChecker, user.refresh);
+    app.post('/auth/refresh', user.refresh);
 
     app.get('/user', authChecker, user.getProfile);
 

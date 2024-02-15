@@ -12,7 +12,7 @@ exports.authChecker = async (req, res, next) => {
 
         const payload = await customJWT.accessVerify(token);
         if (payload.valid === false) { //토큰 유효 X
-            if (payload.message === 'expired token') {
+            if (payload.message === 'jwt expired') {
                 console.log('jwtMiddleware - expired token');
                 return res.send(errResponse(baseResponse.EXPIRED_TOKEN));
 

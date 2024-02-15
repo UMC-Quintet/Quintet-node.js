@@ -1,6 +1,5 @@
 const { pool } = require("../../config/database");
 const userDao = require("../dao/userDao");
-const customeJWT = require("../../config/jwtModules");
 const dotenv = require("dotenv");
 
 dotenv.config();
@@ -39,16 +38,4 @@ exports.getSnsID = async function (user_id) { //카카오 로그아웃에서 이
     connection.release();
 
     return findUserResult[0];
-};
-
-exports.createAccessToken = async function (user) { //토큰 생성하는 부분
-    return await customeJWT.accessSign({
-            id: user.id,
-            username: user.username,
-            email: user.email,
-            provider: user.provider
-        },
-        process.env.JWT_SECRET,
-        {expiresIn: '30m'}
-    );
 };
