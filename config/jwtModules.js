@@ -37,11 +37,11 @@ module.exports = {
     },
 
     refreshSign: async () => { //refreshToken 발급
-        return jwt.sign({}, secret, {algorithm: 'HS256', expiresIn: '1m'});
+        return jwt.sign({}, secret, {algorithm: 'HS256', expiresIn: '30d'});
     },
 
     refreshVerify: async (token, userId) => { //DB에 있는 값과 같은지 확인
-        let dbRefresh = redisClient.get(`${userId}`); //db에서 가져오는거
+        let dbRefresh = await redisClient.get(`${userId}`); //db에서 가져오는거
         let decode = null;
         try {
             if (dbRefresh === token) { //db 속 토큰과 같은지
