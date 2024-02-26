@@ -11,7 +11,7 @@ module.exports = function (app) {
 
     app.get('/user/logout', authChecker, user.logOut);
 
-    app.get('/user/delete', authChecker, user.deleteUser);
+    app.post('/user/delete', authChecker, user.deleteUser);
 
     app.post('/user/data', authChecker, user.postData); //비회원->회원 전환 라우트
 }
