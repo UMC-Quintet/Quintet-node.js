@@ -10,17 +10,22 @@ exports.postTodayChecks = async function (req, res) {
 
     const KST = moment().tz('Asia/Seoul');
     const todayDate = KST.format('YYYY-MM-DD');
-    console.log(new Date(todayDate.toString()));
 
-    const checkDuplicate = await recordProvider.checkDuplicateData(req.user_id, new Date(todayDate.toString()));
+    const checkDuplicate = await recordProvider.checkDuplicateData(req.user_id, todayDate);
+    const previousCount = await checkDuplicate[0].count;
 
-    if(checkDuplicate.length !== 0){
-        return res.send(errResponse(baseResponse.DUPLICATE_DATA));
-    } else {
+    if(previousCount === 1 || previousCount === 0){ //데이터가 0 또는 1개일때
+        if (previousCount === 1) {
+            await recordService.deletePreviousData(checkDuplicate[0].id); //이미 같은 날짜에 데이터가 있으면 삭제
+        }
+
         const params = [ req.user_id, todayDate, work_deg, health_deg, family_deg, relationship_deg, money_deg, work_doc, health_doc, family_doc, relationship_doc, money_doc ];
         const postTodayChecksResult = await recordService.todayChecks(params);
 
         return res.send(postTodayChecksResult);
+    } else { //데이터가 2개 이상이면 에러 발생(정상적이지 않은 상황 -> 서버 확인 필요)
+        console.log('App - previousData > 1');
+        return res.send(errResponse(baseResponse.DB_ERROR));
     }
 };
 
