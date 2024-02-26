@@ -116,14 +116,21 @@ async function selectRecordsByElement(connection, user_id, year, month, element)
 }
 
 async function selectDuplicateData(connection, user_id, date) {
-    const selectRecordsQuery = `select * from document where user_id = ? and date = ?;`;
+    const selectRecordsQuery = `select count(*) as count, id from document where user_id = ? and date = ?;`;
     const selectRecordsResult = await connection.query(selectRecordsQuery, [user_id, date]);
     return selectRecordsResult[0];
+}
+
+async function deletePrevious(connection, id) {
+    const deletePreviousRecord = `delete from document where id = ?;`;
+    const deletePreviousRecordResult = await connection.query(deletePreviousRecord, id);
+    return deletePreviousRecordResult[0];
 }
 
 module.exports = {
     todayChecks,
     selectRecordsByDate,
     selectRecordsByElement,
-    selectDuplicateData
+    selectDuplicateData,
+    deletePrevious
 };

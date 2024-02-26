@@ -22,3 +22,17 @@ exports.todayChecks = async function (params) {
         return errResponse(baseResponse.DB_ERROR);
     }
 };
+
+exports.deletePreviousData = async function (id) {
+    try {
+        const connection = await pool.getConnection(async (conn) => conn);
+        const deletePreviousData = await recordDao.deletePrevious(connection, id);
+        console.log(deletePreviousData);
+        connection.release();
+
+        return response(baseResponse.DB_ERROR);
+    } catch (err) {
+        console.log(`App - deletePrevious Service error\n: ${err.message}`);
+        return errResponse(baseResponse.DB_ERROR);
+    }
+}
